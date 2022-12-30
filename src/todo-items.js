@@ -35,15 +35,19 @@ class Todo {
     //All setters receive a DOM element (usually an input) and get it's information 
     set description(textarea) {
         this.#description = textarea.textContent;
+        updatedLocalStorage();
     }
     set dueDate(dateInput) {
         this.#dueDate = new Date(dateInput.value);
+        updatedLocalStorage();
     }
     set priority(rangeInput) {
         this.#priority = rangeInput.value;
+        updatedLocalStorage();
     }
     set finished(checkboxInput) {
         this.#finished = checkboxInput.checked;
+        updatedLocalStorage();
     }
 
     toJSON() { //used for localStorage
@@ -80,12 +84,14 @@ class Project { //This is a container of todos.
 
     addTodo(title, description, dueDate, priority, finished) {
         this.#todos.push(new Todo(title, description, dueDate, priority, finished));
+        updatedLocalStorage();
     }
 
     removeTodo(todo) {
         /*The todo parameter should be a reference to one todo on the array
         of the project, so [element === todo] can return an index*/
         this.#todos.splice(this.#todos.findIndex((element) => element === todo), 1);
+        updatedLocalStorage();
     }
 
     toJSON() {  //used for localStorage
@@ -98,4 +104,67 @@ class Project { //This is a container of todos.
 
 }
 
-export default Project;
+class ProjectManager { //And this will store all projects
+    #projects;
+    constructor() {
+        if (storageAvailable('localStorage') && localStorage.getItem("projects")) {
+            //We have information from localStorage, build all the projects
+            const parsedData = JSON.parse(localStorage.getItem("projects"));
+            this.#projects = parsedData.map((obj) => {
+                const project = new Project(obj.title, obj.description); //recreate the project
+                obj.todos.forEach((todoInf) => project.todos.push(new Todo(...todoInf))); //and add each todo to it
+                return project;
+            });
+        } else {
+            this.#projects = [];
+        }
+    }
+
+    get projects() {
+        return this.#projects;
+    }
+
+    addProject(title, description) {
+        this.#projects.push(new Project(title, description));
+        updatedLocalStorage();
+    }
+
+    removeProject(project) { //same as removeTodo() from Project class
+        this.#projects.splice(this.#projects.findIndex((element) => element === project), 1);
+        updatedLocalStorage();
+    }
+
+    toJSON() { //localStorage too
+        return this.#projects;
+    }
+
+}
+
+function storageAvailable(type) { //From MDN
+    let storage;
+    try {
+        storage = window[type];
+        const x = '__storage_test__';
+        storage.setItem(x, x);
+        storage.removeItem(x);
+        return true;
+    }
+    catch (e) {
+        return e instanceof DOMException && (
+            e.code === 22 ||
+            e.code === 1014 ||
+            e.name === 'QuotaExceededError' ||
+            e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
+            (storage && storage.length !== 0);
+    }
+}
+
+function updatedLocalStorage() { //Called each time one change happens
+    if (storageAvailable('localStorage')) {
+        localStorage.setItem('projects', JSON.stringify(projectManager.projects));
+    }
+}
+
+const projectManager = new ProjectManager();
+
+export default projectManager;
