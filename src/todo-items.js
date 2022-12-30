@@ -6,13 +6,14 @@ class Todo {
     #dueDate;
     #priority;
     #finished;
-    constructor(title, description, dueDate, priority) {
+    constructor(title, description, dueDate, priority, finished=false) {
         this.#title = title;
         this.#description = description;
-        /*dueDate comes from an input value of type date with pattern: year-month-day*/
-        this.#dueDate = new Date(dueDate); 
+        this.#dueDate = new Date(dueDate); //comes from an input value of type date with pattern year-mouth-day
         this.#priority = priority;
-        this.#finished = false;
+        /*finished value is false by default, will be true when the
+        object is recreated with information from localStorage*/
+        this.#finished = finished;
     }
 
     get title() {
@@ -46,15 +47,55 @@ class Todo {
     }
 
     toJSON() { //used for localStorage
-        return JSON.stringify({
-            title: this.#title,
-            description: this.#description,
-            dueDate: format(this.#dueDate, 'yyyy-MM-dd'),
-            priority: this.#priority,
-            finished: this.#finished
-        });
+        return [
+            this.#title,
+            this.#description,
+            format(this.#dueDate, 'yyyy-MM-dd'),
+            this.#priority,
+            this.#finished
+        ];
     }
 
 }
 
-export default Todo;
+class Project { //This is a container of todos.
+    #title;
+    #description;
+    #todos;
+    constructor(title, description) {
+        this.#title = title;
+        this.#description = description;
+        this.#todos = [];
+    }
+
+    get title() {
+        return this.#title;
+    }
+    get description() {
+        return this.#description;
+    }
+    get todos() {
+        return this.#todos;
+    }
+
+    addTodo(title, description, dueDate, priority, finished) {
+        this.#todos.push(new Todo(title, description, dueDate, priority, finished));
+    }
+
+    removeTodo(todo) {
+        /*The todo parameter should be a reference to one todo on the array
+        of the project, so [element === todo] can return an index*/
+        this.#todos.splice(this.#todos.findIndex((element) => element === todo), 1);
+    }
+
+    toJSON() {  //used for localStorage
+        return {
+            title: this.#title,
+            description: this.#description,
+            todos: this.#todos
+        };
+    }
+
+}
+
+export default Project;
