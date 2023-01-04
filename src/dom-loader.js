@@ -60,9 +60,15 @@ class DOMCreator {
 }
 
 class EventCreator {
-    
-    projectLiEvents() {
 
+    projectLiEvents(projectLi, projectManager, project) {
+        projectLi.querySelector('.project-viewer').addEventListener('click', () => {
+            loader.createProjectPage(project);
+        });
+        projectLi.querySelector('.project-deleter').addEventListener('click', (e) => {
+            e.target.parentElement.parentElement.removeChild(e.target.parentElement);
+            projectManager.removeProject(project);
+        });
     }
 
     projectPageEvents() {
@@ -77,17 +83,30 @@ class EventCreator {
 class DOMLoader {
     #creator;
     #eventCreator;
+    #projectList;
+
     constructor() {
         this.#creator = new DOMCreator();
         this.#eventCreator = new EventCreator();
+        this.#projectList = document.querySelector('#project-list');
     }
 
-    createProjectList(project) {
+    createProjectList(projectManager) {
+        const container = document.createDocumentFragment();
+        projectManager.projects.map(project => {
+            //create nodes and add event listeners
+            const node = this.#creator.projectLi(project);
+            this.#eventCreator.projectLiEvents(node, projectManager, project);
+            return node;
+        }).forEach(node => {
+            //append each node to the container
+            container.appendChild(node);
+        });
+        this.#projectList.appendChild(container); //and render the project list
+    }
+
+    createProjectPage(project) {
         document.body.appendChild(this.#creator.projectPage(project));
-    }
-
-    createProjectPage() {
-        
     }
 
     createTodoList() {
