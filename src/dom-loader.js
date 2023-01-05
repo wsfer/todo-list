@@ -119,7 +119,19 @@ class EventCreator {
     }
 
     todoEvents(todoNode, todo, project) {
-        return;
+        const todoBody = todoNode.querySelector('.todo-body');
+        const todoContainer = todoNode.querySelector('.todo');
+
+        todoNode.querySelector('.todo-check').addEventListener('input', (e) => {
+            todo.finished = e.target.checked;
+        })
+        todoNode.querySelector('.todo-expand').addEventListener('click', () => {
+            todoBody.style.display = (todoBody.style.display === 'none') ? 'grid' : 'none';
+        });
+        todoNode.querySelector('.todo-delete').addEventListener('click', () => {
+            todoContainer.parentElement.removeChild(todoContainer);
+            project.removeTodo(todo);
+        })
     }
 
 }

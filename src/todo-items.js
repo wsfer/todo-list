@@ -32,21 +32,20 @@ class Todo {
         return this.#finished;
     }
 
-    //All setters receive a DOM element (usually an input) and get it's information 
-    set description(textarea) {
-        this.#description = textarea.textContent;
+    set description(description) {
+        this.#description = description;
         updatedLocalStorage();
     }
-    set dueDate(dateInput) {
-        this.#dueDate = new Date(dateInput.value);
+    set dueDate(date) {
+        this.#dueDate = new Date(date);
         updatedLocalStorage();
     }
-    set priority(rangeInput) {
-        this.#priority = rangeInput.value;
+    set priority(priority) {
+        this.#priority = priority;
         updatedLocalStorage();
     }
-    set finished(checkboxInput) {
-        this.#finished = checkboxInput.checked;
+    set finished(bool) {
+        this.#finished = bool;
         updatedLocalStorage();
     }
 
