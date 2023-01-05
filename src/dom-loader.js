@@ -26,6 +26,9 @@ class DOMCreator {
                 <button class="add-todo">+</button>
              </header>
              <section class="todo-container"></section>
+             <section class="todo-creator" style="display: none">
+
+             </section>
             `
         );
     }
@@ -71,12 +74,19 @@ class EventCreator {
         });
     }
 
-    projectPageEvents() {
+    projectPageEvents(projectPage) {
+        const addTodo = projectPage.querySelector('.add-todo');
+        const todoContainer = projectPage.querySelector('.todo-container');
+        const todoCreator = projectPage.querySelector('.todo-creator');
 
+        addTodo.addEventListener('click', () => {
+            todoContainer.textContent = '';
+
+        });
     }
 
-    todoEvents() {
-
+    todoEvents(todoNode, todo, project) {
+        return;
     }
 }
 
@@ -84,33 +94,51 @@ class DOMLoader {
     #creator;
     #eventCreator;
     #projectList;
+    #projectPage;
 
     constructor() {
         this.#creator = new DOMCreator();
         this.#eventCreator = new EventCreator();
         this.#projectList = document.querySelector('#project-list');
+        this.#projectPage = document.querySelector('#project-page');
     }
 
     createProjectList(projectManager) {
+        this.#projectList.textContent = ''; //clear the list first
         const container = document.createDocumentFragment();
+
         projectManager.projects.map(project => {
-            //create nodes and add event listeners
-            const node = this.#creator.projectLi(project);
-            this.#eventCreator.projectLiEvents(node, projectManager, project);
+            const node = this.#creator.projectLi(project); //create node
+            this.#eventCreator.projectLiEvents(node, projectManager, project); //add events
             return node;
         }).forEach(node => {
-            //append each node to the container
-            container.appendChild(node);
+            container.appendChild(node); //append all nodes to container
         });
+
         this.#projectList.appendChild(container); //and render the project list
     }
 
     createProjectPage(project) {
-        document.body.appendChild(this.#creator.projectPage(project));
+        this.#projectPage.textContent = ''; //clear project page
+
+        const page = this.#creator.projectPage(project); //create page content
+        this.#eventCreator.projectPageEvents(page); //add events
+        const todos = this.createTodoList(project.todos); //create todos
+        page.querySelector('.todo-container').appendChild(todos); //append todos to the page
+
+        this.#projectPage.appendChild(page); //render the page
     }
 
-    createTodoList() {
+    createTodoList(todos, project) {
+        const container = document.createDocumentFragment(); 
 
+        todos.map((todo) => {
+            const node = this.#creator.todo(todo); //create todo content
+            this.#eventCreator.todoEvents(node, todo, project); //add events
+            return node; 
+        }).forEach((node) => container.appendChild(node));
+
+        return container;
     }
 }
 
