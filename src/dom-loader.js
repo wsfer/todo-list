@@ -26,9 +26,22 @@ class DOMCreator {
                 <button class="add-todo">+</button>
              </header>
              <section class="todo-container"></section>
-             <section class="todo-creator" style="display: none">
-
-             </section>
+             <form action="" class="todo-creator" style="display: none">
+                <label for="title">Title</label>
+                <input type="text" id="title">
+                <label for="description">Description</label>
+                <textarea id="description"></textarea>
+                <label for="date">Due date</label>
+                <input type="date" id="date">
+                <label for="priority">Select priority:</label>
+                <select name="priority" id="priority">
+                    <option value="low">Low</option>
+                    <option value="medium">Medium</option>
+                    <option value="high">High</option>
+                </select>
+                <button type="button" class="create">Create</button>
+                <button type="button" class="cancel">Cancel</button>
+             </form>
             `
         );
     }
@@ -74,20 +87,41 @@ class EventCreator {
         });
     }
 
-    projectPageEvents(projectPage) {
-        const addTodo = projectPage.querySelector('.add-todo');
-        const todoContainer = projectPage.querySelector('.todo-container');
-        const todoCreator = projectPage.querySelector('.todo-creator');
+    projectPageEvents(pageNode, project) {
+        const addTodo = pageNode.querySelector('.add-todo');
+        const todoContainer = pageNode.querySelector('.todo-container');
+        const todoCreator = pageNode.querySelector('.todo-creator');
 
         addTodo.addEventListener('click', () => {
+            todoCreator.style.display = 'block';
             todoContainer.textContent = '';
-
         });
+
+        const title = todoCreator.querySelector('#title');
+        const description = todoCreator.querySelector('#description');
+        const dueDate = todoCreator.querySelector('#date');
+        const priority = todoCreator.querySelector('#priority');
+
+        todoCreator.querySelector('.create').addEventListener('click', () => {
+            todoCreator.style.display = 'none';
+            project.addTodo(title.value, description.value, dueDate.value, priority.value);
+            todoContainer.appendChild(loader.createTodoList(project));
+            title.value = '';
+            description.value = '';
+            dueDate.value = '';
+            priority.value = '';
+        });
+        todoCreator.querySelector('.cancel').addEventListener('click', () => {
+            todoCreator.style.display = 'none';
+            todoContainer.appendChild(loader.createTodoList(project));
+        });
+
     }
 
     todoEvents(todoNode, todo, project) {
         return;
     }
+
 }
 
 class DOMLoader {
@@ -122,22 +156,23 @@ class DOMLoader {
         this.#projectPage.textContent = ''; //clear project page
 
         const page = this.#creator.projectPage(project); //create page content
-        this.#eventCreator.projectPageEvents(page); //add events
-        const todos = this.createTodoList(project.todos); //create todos
+        this.#eventCreator.projectPageEvents(page, project); //add events
+        const todos = this.createTodoList(project); //create todos
         page.querySelector('.todo-container').appendChild(todos); //append todos to the page
 
         this.#projectPage.appendChild(page); //render the page
     }
 
-    createTodoList(todos, project) {
+    createTodoList(project) {
         const container = document.createDocumentFragment(); 
+        const todos = project.todos;
 
         todos.map((todo) => {
             const node = this.#creator.todo(todo); //create todo content
             this.#eventCreator.todoEvents(node, todo, project); //add events
             return node; 
         }).forEach((node) => container.appendChild(node));
-
+        
         return container;
     }
 }
