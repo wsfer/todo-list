@@ -2,5 +2,108 @@
     padding: 0;
     margin: 0;
     box-sizing: border-box;
-    border: 1px solid red;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+body {
+    display: grid;
+    height: 100vh;
+    grid-template-columns: 1fr 4fr;
+    grid-template-rows: 1fr auto;
+    background-color: #AFCBFF;
+}
+
+button {
+    background-color: inherit;
+    color: inherit;
+    cursor: pointer;
+}
+
+/* Header section */
+body > header {
+    background-color: #0e1c36;
+    color: white;
+    width: 20vw;
+}
+
+/* Main content page */
+main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Project content container */
+
+#project-page {
+    background-color: #0e1c36;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+    width: 60vw;
+    box-shadow: 2px 2px 5px black;
+}
+
+.project-title {
+    text-align: center;
+}
+
+.project-description {
+    text-align: center;
+}
+
+/* Todo container */
+.todo-header {
+    display: grid;
+    grid-template-columns: 1fr 3fr 2fr 1.5fr 1.5fr;
+}
+
+.todo-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.todo {
+    display: grid;
+    grid-template-columns: 1fr 3fr 2fr 1.5fr 1.5fr;
+    grid-template-rows: auto 1fr;
+    background-color: #AFCBFF;
+    color: black;
+}
+
+.todo-low {
+    color: green;
+}
+
+.todo-medium {
+    color: gold;
+}
+
+.todo-high {
+    color: red;
+}
+
+.todo-body {
+    grid-column: span 5;
+    display: grid;
+    grid-template-columns: 1fr 3fr 2fr 1.5fr 1.5fr;
+}
+
+.todo-body > div {
+    border-top: 1px solid black;
+}
+
+.todo-body textarea {
+    width: 100%;
+}
+
+.todo input, .todo textarea {
+    background-color: #FFEDE1;
+}
+
+/* Footer section */
+footer {
+    grid-column: span 2;
+    background-color: transparent;
 }
