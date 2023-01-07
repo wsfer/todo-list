@@ -114,16 +114,42 @@ class DOMCreator {
         );
     }
 
+    projectCreator() {
+        return this.#range.createContextualFragment(
+            `<div id="project-creator-container">
+                <section id="project-creator">
+                    <h2>Create a Project</h2>
+                    <label>Title:
+                        <input type="text" id="project-title-input">
+                    </label>
+                    <label>Description
+                        <textarea id="project-description-input" rows="5" placeholder="describe your project"></textarea>
+                    </label>
+                    <div>
+                        <button id="confirm-project-creation">
+                            Confirm
+                        </button>
+                        <button id="cancel-project-creation">
+                            Cancel
+                        </button>
+                    </div>
+                </section>
+            </div>`
+        );
+    }
+
 }
 
 class EventCreator {
 
     projectLiEvents(projectLi, projectManager, project) {
+        const li = projectLi.querySelector('li');
+
         projectLi.querySelector('.project-viewer').addEventListener('click', () => {
             loader.createProjectPage(project);
         });
-        projectLi.querySelector('.project-deleter').addEventListener('click', (e) => {
-            e.target.parentElement.parentElement.removeChild(e.target.parentElement);
+        projectLi.querySelector('.project-deleter').addEventListener('click', () => {
+            document.querySelector('#project-list').removeChild(li); //if you put (projectLi.querySelector('li')) instead of (li) will return null;
             projectManager.removeProject(project);
         });
     }
@@ -205,6 +231,21 @@ class EventCreator {
         });
     }
 
+    projectCreatorEvents(creator, manager) {
+        const title = creator.querySelector('#project-title-input');
+        const description = creator.querySelector('#project-description-input');
+
+        creator.querySelector('#confirm-project-creation').addEventListener('click', () => {
+            manager.addProject(title.value, description.value);
+            document.body.removeChild(document.querySelector('#project-creator-container'));
+            loader.createProjectList(manager);
+        });
+        creator.querySelector('#cancel-project-creation').addEventListener('click', () => {
+            document.body.removeChild(document.querySelector('#project-creator-container'));
+        });
+
+    }
+
 }
 
 class DOMLoader {
@@ -266,6 +307,12 @@ class DOMLoader {
         }).forEach((node) => container.appendChild(node));
         
         return container;
+    }
+
+    createProjectCreator(projectManager) {
+        const projectCreator = this.#creator.projectCreator();
+        this.#eventCreator.projectCreatorEvents(projectCreator, projectManager);
+        document.body.appendChild(projectCreator);
     }
 }
 
