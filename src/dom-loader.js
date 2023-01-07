@@ -9,7 +9,11 @@ class DOMCreator {
         return this.#range.createContextualFragment(
             `<li class="project-list-element">
                 <button class="project-viewer">${project.title}</button>
-                <button class="project-deleter">X</button>
+                <button class="project-deleter">
+                    <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M9,3V4H4V6H5V19A2,2 0 0,0 7,21H17A2,2 0 0,0 19,19V6H20V4H15V3H9M9,8H11V17H9V8M13,8H15V17H13V8Z" />
+                    </svg>
+                </button>
             </li>`
         );
     }
@@ -95,7 +99,7 @@ class DOMCreator {
                     </div>
                     <div>
                         <label>Change priority:
-                            <select class="edit-priority" value="${todo.priority}">
+                            <select class="edit-priority" value="${todo.priority}" size=3>
                                 <option value="low">Low</option>
                                 <option value="medium">Medium</option>
                                 <option value="high">High</option>
@@ -236,9 +240,18 @@ class DOMLoader {
 
         const page = this.#creator.projectPage(project); //create page content
         this.#eventCreator.projectPageEvents(page, project); //add events
-        const todos = this.createTodoList(project); //create todos
-        page.querySelector('.todo-container').appendChild(todos); //append todos to the page
-
+        if (project.todos.length) { //if there is todos on this project
+            const todos = this.createTodoList(project); //create todos
+            page.querySelector('.todo-container').appendChild(todos); //append todos to the page
+        } else { //else append a message informing that there's no todos
+            const message = document.createElement('p');
+            message.textContent = "There's no todos on this project yet";
+            message.style.color = 'white';
+            message.style.textAlign = 'center';
+            message.style.marginTop = '1rem';
+            page.querySelector('.todo-container').appendChild(message);
+        }
+        
         this.#projectPage.appendChild(page); //render the page
     }
 

@@ -3,6 +3,7 @@
     margin: 0;
     box-sizing: border-box;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    text-decoration: none;
 }
 
 body {
@@ -11,12 +12,15 @@ body {
     grid-template-columns: 1fr 4fr;
     grid-template-rows: 1fr auto;
     background-color: #AFCBFF;
+    position: relative;
 }
 
 button {
     background-color: inherit;
     color: inherit;
     cursor: pointer;
+    border: none;
+    font-size: inherit;
 }
 
 /* Header section */
@@ -24,6 +28,97 @@ body > header {
     background-color: #0e1c36;
     color: white;
     width: 20vw;
+}
+
+header > h1 {
+    margin: 0.5rem;
+}
+
+header > h2 {
+    margin-left: 0.5rem;
+}
+
+#project-list-title {
+    display: flex;
+}
+
+#add-project {
+    background-color: #AFCBFF;
+    color: black;
+    border-radius: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 0.5rem;
+    width: 1rem;
+    height: 1rem;
+}
+
+#project-list {
+    margin: 0 1rem;
+    list-style: none;
+}
+
+#project-list > li {
+    border-top: 1px solid black;
+    font-size: 1.2rem;
+    display: flex;
+    padding: 0.25rem;
+}
+
+.project-deleter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 0.5rem;
+}
+
+/* Project creation container */
+#project-creator-container {
+    width: 100%;
+    height: 100%;
+    background-color:rgb(42, 42, 48, 0.4);
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#project-creator {
+    background-color: #0e1c36;
+    color: white;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 2px 2px 2px black;
+}
+
+#project-creator > label {
+    display: flex;
+    flex-direction: column;
+    margin: 1rem 0.5rem;
+}
+
+#project-creator > div {
+    display: flex;
+    justify-content: space-around;
+}
+
+#confirm-project-creation, #cancel-project-creation {
+    color: black;
+    padding: 1rem;
+    border: 1px solid black;
+    border-radius: 1rem;
+}
+
+#confirm-project-creation {
+    background-color: rgb(55, 161, 55);
+}
+
+#cancel-project-creation {
+    background-color: rgb(161, 71, 55);
 }
 
 /* Main content page */
@@ -43,6 +138,7 @@ main {
     padding: 2rem;
     width: 60vw;
     box-shadow: 2px 2px 5px black;
+    border-radius: 1rem;
 }
 
 .project-title {
@@ -57,6 +153,20 @@ main {
 .todo-header {
     display: grid;
     grid-template-columns: 1fr 3fr 2fr 1.5fr 1.5fr;
+    margin-top: 2rem;
+}
+
+.todo-header > * {
+    text-align: center;
+    border-right: 1px solid black;
+}
+
+.add-todo {
+    background-color: #FFEDE1;
+    color: #0e1c36;
+    width: 50%;
+    border-radius: 0.5rem;
+    justify-self: center;
 }
 
 .todo-container {
@@ -92,10 +202,17 @@ main {
 
 .todo-body > div {
     border-top: 1px solid black;
+    border-bottom: 1px solid black;
+}
+
+.todo-body > div:first-child, .todo-body > div:last-child {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .todo-body textarea {
-    width: 100%;
+    width: 90%;
 }
 
 .todo input, .todo textarea {
@@ -105,5 +222,17 @@ main {
 /* Footer section */
 footer {
     grid-column: span 2;
-    background-color: transparent;
+    background-color: #0e1c36;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+footer a {
+    color: inherit;
+}
+
+footer a:hover {
+    text-decoration: underline;
 }
