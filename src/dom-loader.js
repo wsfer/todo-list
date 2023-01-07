@@ -27,24 +27,36 @@ class DOMCreator {
                 <p>Title</p>
                 <p>Date</p>
                 <p>Priority</p>
-                <button class="add-todo">+</button>
+                <div>
+                    <button class="add-todo">
+                        <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                            <path fill="currentColor" d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" />
+                        </svg>
+                    </button>
+                </div>
              </header>
              <section class="todo-container"></section>
              <form action="" class="todo-creator" style="display: none">
-                <label for="title">Title</label>
-                <input type="text" id="title">
-                <label for="description">Description</label>
-                <textarea id="description"></textarea>
-                <label for="date">Due date</label>
-                <input type="date" id="date">
-                <label for="priority">Select priority:</label>
-                <select name="priority" id="priority">
-                    <option value="low">Low</option>
-                    <option value="medium">Medium</option>
-                    <option value="high">High</option>
-                </select>
-                <button type="button" class="create">Create</button>
-                <button type="button" class="cancel">Cancel</button>
+                <label>Title:
+                    <input type="text" id="title">
+                </label>
+                <label>Description:
+                    <textarea id="description"></textarea>
+                </label>
+                <label>Due date:
+                    <input type="date" id="date">
+                </label>
+                <label>Select priority:
+                    <select name="priority" id="priority">
+                        <option value="low">Low</option>
+                        <option value="medium">Medium</option>
+                        <option value="high">High</option>
+                    </select>
+                </label>
+                <div>
+                    <button type="button" class="create">Create</button>
+                    <button type="button" class="cancel">Cancel</button>
+                </div>
              </form>
             `
         );
@@ -160,7 +172,7 @@ class EventCreator {
         const todoCreator = pageNode.querySelector('.todo-creator');
 
         addTodo.addEventListener('click', () => {
-            todoCreator.style.display = 'block';
+            todoCreator.style.display = 'flex';
             todoContainer.textContent = '';
         });
 

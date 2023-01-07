@@ -106,23 +106,24 @@ header > h2 {
     justify-content: space-around;
 }
 
-#confirm-project-creation, #cancel-project-creation {
+#confirm-project-creation, #cancel-project-creation, .create, .cancel {
     color: black;
     padding: 1rem;
     border: 1px solid black;
     border-radius: 1rem;
 }
 
-#confirm-project-creation {
+#confirm-project-creation, .create {
     background-color: rgb(55, 161, 55);
 }
 
-#cancel-project-creation {
+#cancel-project-creation, .cancel {
     background-color: rgb(161, 71, 55);
 }
 
 /* Main content page */
 main {
+    padding: 20% 10%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -159,6 +160,7 @@ main {
 .todo-header > * {
     text-align: center;
     border-right: 1px solid black;
+    border-bottom: 1px solid black;
 }
 
 .add-todo {
@@ -178,8 +180,12 @@ main {
     display: grid;
     grid-template-columns: 1fr 3fr 2fr 1.5fr 1.5fr;
     grid-template-rows: auto 1fr;
-    background-color: #AFCBFF;
-    color: black;
+    padding: 1rem 0;
+    border-bottom: 1px solid black;
+}
+
+.todo > p, .todo > h3 {
+    padding-left: 2.5rem;
 }
 
 .todo-low {
@@ -194,15 +200,29 @@ main {
     color: red;
 }
 
+.todo-options {
+    display: flex;
+    justify-content: space-around;
+}
+
 .todo-body {
     grid-column: span 5;
     display: grid;
     grid-template-columns: 1fr 3fr 2fr 1.5fr 1.5fr;
+    margin-top: 1rem;
 }
 
 .todo-body > div {
     border-top: 1px solid black;
-    border-bottom: 1px solid black;
+    padding-top: 1rem;
+}
+
+.close-todo-body {
+    color: black;
+    padding: 1rem;
+    border: 1px solid black;
+    border-radius: 1rem;
+    background-color: rgb(161, 71, 55);
 }
 
 .todo-body > div:first-child, .todo-body > div:last-child {
@@ -216,7 +236,24 @@ main {
 }
 
 .todo input, .todo textarea {
-    background-color: #FFEDE1;
+    background-color: #AFCBFF;
+    color: black;
+}
+
+.todo-creator {
+    padding-top: 1rem;
+    flex-direction: column;
+}
+
+.todo-creator > * {
+    padding-top: 1rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.todo-creator > div {
+    flex-direction: row;
+    justify-content: space-around;
 }
 
 /* Footer section */
@@ -227,12 +264,21 @@ footer {
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 1rem;
+    font-size: 1.5rem;
 }
 
 footer a {
     color: inherit;
 }
 
+/* effects */
 footer a:hover {
     text-decoration: underline;
+}
+
+.todo-body > div:first-child > button:hover,
+#project-list > li > button:last-child:hover,
+.todo-options > button:hover {
+    color: goldenrod;
 }
