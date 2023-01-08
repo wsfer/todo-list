@@ -74,6 +74,10 @@ header > h2 {
 }
 
 /* Project creation container */
+input, textarea {
+    background-color: #AFCBFF;
+}
+
 #project-creator-container {
     width: 100%;
     height: 100%;

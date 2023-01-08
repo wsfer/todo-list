@@ -198,8 +198,10 @@ class EventCreator {
     }
 
     todoEvents(todoNode, todo, project) {
+        const todoContainer = document.querySelector('.todo-container');
+
         const todoBody = todoNode.querySelector('.todo-body');
-        const todoContainer = todoNode.querySelector('.todo');
+        const todoDiv = todoNode.querySelector('.todo');
         const todoDescription = todoNode.querySelector('.todo-description');
         const todoDate = todoNode.querySelector('.todo-date');
         const todoPriority = todoNode.querySelector('.todo-priority');
@@ -214,8 +216,11 @@ class EventCreator {
             todoBody.style.display = (todoBody.style.display === 'none') ? 'grid' : 'none';
         });
         todoNode.querySelector('.todo-delete').addEventListener('click', () => {
-            todoContainer.parentElement.removeChild(todoContainer);
-            project.removeTodo(todo);
+            todoContainer.removeChild(todoDiv);
+            project.removeTodo(todoDiv);
+            if (!project.todos.length) { //append the message that there's no todos
+                todoContainer.appendChild(loader.createTodoList(project));
+            }
         });
         todoNode.querySelector('.edit-description').addEventListener('click', () => {
             todoDescription.disabled = false;
@@ -293,17 +298,8 @@ class DOMLoader {
 
         const page = this.#creator.projectPage(project); //create page content
         this.#eventCreator.projectPageEvents(page, project); //add events
-        if (project.todos.length) { //if there is todos on this project
-            const todos = this.createTodoList(project); //create todos
-            page.querySelector('.todo-container').appendChild(todos); //append todos to the page
-        } else { //else append a message informing that there's no todos
-            const message = document.createElement('p');
-            message.textContent = "There's no todos on this project yet";
-            message.style.color = 'white';
-            message.style.textAlign = 'center';
-            message.style.marginTop = '1rem';
-            page.querySelector('.todo-container').appendChild(message);
-        }
+        const todos = this.createTodoList(project); //create todos
+        page.querySelector('.todo-container').appendChild(todos); //append todos to the page
         
         this.#projectPage.appendChild(page); //render the page
     }
@@ -311,13 +307,22 @@ class DOMLoader {
     createTodoList(project) {
         const container = document.createDocumentFragment(); 
         const todos = project.todos;
-
-        todos.map((todo) => {
-            const node = this.#creator.todo(todo); //create todo content
-            this.#eventCreator.todoEvents(node, todo, project); //add events
-            return node; 
-        }).forEach((node) => container.appendChild(node));
         
+        if (project.todos.length) { //if there is todos on this project
+            todos.map((todo) => {
+                const node = this.#creator.todo(todo); //create todo content
+                this.#eventCreator.todoEvents(node, todo, project); //add events
+                return node;
+            }).forEach((node) => container.appendChild(node));    
+        } else { //else append a message informing that there's no todos
+            const message = document.createElement('p');
+            message.textContent = "There's no todos on this project yet";
+            message.style.color = 'white';
+            message.style.textAlign = 'center';
+            message.style.marginTop = '1rem';
+            container.appendChild(message);
+        }
+
         return container;
     }
 
