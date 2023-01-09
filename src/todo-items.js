@@ -1,5 +1,3 @@
-import { format } from 'date-fns';
-
 class Todo {
     #title;
     #description;
@@ -7,10 +5,10 @@ class Todo {
     #priority;
     #finished;
     constructor(title, description, dueDate, priority, finished=false) {
-        this.#title = title;
-        this.#description = description;
-        this.#dueDate = new Date(dueDate); //comes from an input value of type date with pattern year-mouth-day
-        this.#priority = priority;
+        this.#title = title || 'No title';
+        this.#description = description || 'No description';
+        this.#dueDate = new Date(dueDate);
+        this.#priority = priority || 'low';
         /*finished value is false by default, will be true when the
         object is recreated with information from localStorage*/
         this.#finished = finished;
@@ -23,7 +21,7 @@ class Todo {
         return this.#description;
     }
     get dueDate() {
-        return format(this.#dueDate, 'MMM, do');
+        return this.#dueDate;
     }
     get priority() {
         return this.#priority;
@@ -53,7 +51,7 @@ class Todo {
         return [
             this.#title,
             this.#description,
-            format(this.#dueDate, 'yyyy-MM-dd'),
+            this.#dueDate.toString(),
             this.#priority,
             this.#finished
         ];

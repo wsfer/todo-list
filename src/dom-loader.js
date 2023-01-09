@@ -1,3 +1,4 @@
+import { format } from 'date-fns';
 
 class DOMCreator {
     #range;
@@ -43,16 +44,18 @@ class DOMCreator {
                 <label>Description:
                     <textarea id="description"></textarea>
                 </label>
-                <label>Due date:
-                    <input type="date" id="date">
-                </label>
-                <label>Select priority:
-                    <select name="priority" id="priority">
-                        <option value="low">Low</option>
-                        <option value="medium">Medium</option>
-                        <option value="high">High</option>
-                    </select>
-                </label>
+                <div>
+                    <label>Due date:
+                        <input type="date" id="date">
+                    </label>
+                    <label>Select priority:
+                        <select name="priority" id="priority">
+                            <option value="low">Low</option>
+                            <option value="medium">Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                    </label>
+                </div>
                 <div>
                     <button type="button" class="create">Create</button>
                     <button type="button" class="cancel">Cancel</button>
@@ -67,7 +70,7 @@ class DOMCreator {
             `<div class="todo">
                 <input type="checkbox" class="todo-check" ${todo.finished ? 'checked' : ''}></input>
                 <h3 class="todo-title">${todo.title}</h3>
-                <p class="todo-date">${todo.dueDate}</p>
+                <p class="todo-date">${format(todo.dueDate, 'MMM/dd')}</p>
                 <p class="todo-priority todo-${todo.priority}">${todo.priority}</p>
                 <div class="todo-options">
                     <button class="todo-expand">
@@ -194,6 +197,8 @@ class EventCreator {
             todoCreator.style.display = 'none';
             todoContainer.appendChild(loader.createTodoList(project));
         });
+        
+        dueDate.valueAsDate = new Date(); //default date value is today
 
     }
 
@@ -205,6 +210,8 @@ class EventCreator {
         const todoDescription = todoNode.querySelector('.todo-description');
         const todoDate = todoNode.querySelector('.todo-date');
         const todoPriority = todoNode.querySelector('.todo-priority');
+
+        todoNode.querySelector('.edit-date').valueAsDate = todo.dueDate; //default date value is today
 
         todoNode.querySelector('.todo-title').addEventListener('click', () => {
             todoBody.style.display = 'grid';
@@ -235,7 +242,7 @@ class EventCreator {
         });
         todoNode.querySelector('.edit-date').addEventListener('input', (e) => {
             todo.dueDate = e.target.value;
-            todoDate.textContent = todo.dueDate;
+            todoDate.textContent = format(todo.dueDate, 'MMM/dd');
         });
         todoNode.querySelector('.close-todo-body').addEventListener('click', () => {
             todoBody.style.display = 'none';
