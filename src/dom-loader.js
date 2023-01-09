@@ -134,8 +134,8 @@ class DOMCreator {
                     <label>Title:
                         <input type="text" id="project-title-input">
                     </label>
-                    <label>Description
-                        <textarea id="project-description-input" rows="5" placeholder="describe your project"></textarea>
+                    <label>Description:
+                        <textarea id="project-description-input" rows="5"></textarea>
                     </label>
                     <div>
                         <button id="confirm-project-creation">

@@ -74,10 +74,6 @@ header > h2 {
 }
 
 /* Project creation container */
-input, textarea {
-    background-color: #AFCBFF;
-}
-
 #project-creator-container {
     width: 100%;
     height: 100%;
@@ -123,6 +119,15 @@ input, textarea {
 
 #cancel-project-creation, .cancel {
     background-color: rgb(161, 71, 55);
+}
+
+#project-title-input, #project-description-input {
+    margin: 0.5rem;
+    padding: 0.5rem;
+    background-color: #AFCBFF;
+    border: none;
+    resize: none;
+    border-radius: 0.25rem;
 }
 
 /* Main content page */
