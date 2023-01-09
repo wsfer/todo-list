@@ -8,7 +8,7 @@
 
 body {
     display: grid;
-    height: 100vh;
+    min-height: 100vh;
     grid-template-columns: 1fr 4fr;
     grid-template-rows: 1fr auto;
     background-color: #AFCBFF;
@@ -32,10 +32,28 @@ body > header {
 
 header > h1 {
     margin: 0.5rem;
+    font-size: 3rem;
+    display: flex;
+    align-items: center;
+}
+
+header > h1 > svg {
+    width: 3rem;
+    height: 3rem;
+    margin-right: 1rem;
 }
 
 header > h2 {
     margin-left: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+#home {
+    cursor: pointer;
+}
+
+#home:hover {
+    color: goldenrod;
 }
 
 #project-list-title {
@@ -80,11 +98,12 @@ header > h2 {
     background-color:rgb(42, 42, 48, 0.4);
     position: absolute;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
 }
 
 #project-creator {
+    margin-top: 5rem;
     background-color: #0e1c36;
     color: white;
     width: 50%;
@@ -106,7 +125,7 @@ header > h2 {
     justify-content: space-around;
 }
 
-#confirm-project-creation, #cancel-project-creation, .create, .cancel {
+#confirm-project-creation, #cancel-project-creation, .create, .cancel, #create-project-home {
     color: black;
     padding: 1rem;
     border: 1px solid black;
@@ -136,6 +155,26 @@ main {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+#home-page-title {
+    font-size: 2.5rem;
+    text-align: center;
+}
+
+#home-page-description {
+    font-size: 1.5rem;
+    text-align: center;
+    margin: 1rem;
+}
+
+#create-project-home {
+    margin-top: 2rem;
+    background-color: #FFEDE1;
+}
+
+#create-project-home:hover {
+    background-color: goldenrod;
 }
 
 /* Project content container */

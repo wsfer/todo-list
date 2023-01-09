@@ -1,4 +1,5 @@
 import { format } from 'date-fns';
+import projectManager from './todo-items';
 
 class DOMCreator {
     #range;
@@ -153,6 +154,14 @@ class DOMCreator {
         );
     }
 
+    homePage() {
+        return this.#range.createContextualFragment(
+            `<h2 id="home-page-title">Welcome</h2>
+             <p id="home-page-description">This is a Todolist app where you can organize your projects</p>
+             <button id="create-project-home">Start Creating</button>`
+        );
+    }
+
 }
 
 class EventCreator {
@@ -166,6 +175,8 @@ class EventCreator {
         projectLi.querySelector('.project-deleter').addEventListener('click', () => {
             document.querySelector('#project-list').removeChild(li); //if you put (projectLi.querySelector('li')) instead of (li) will return null;
             projectManager.removeProject(project);
+            document.querySelector('#project-page').textContent = '';
+            loader.createHomePage();
         });
     }
 
@@ -270,6 +281,12 @@ class EventCreator {
 
     }
 
+    homePageEvents(page, projectManager) {
+        page.querySelector('#create-project-home').addEventListener('click', () => {
+            loader.createProjectCreator(projectManager);
+        })
+    }
+
 }
 
 class DOMLoader {
@@ -337,6 +354,12 @@ class DOMLoader {
         const projectCreator = this.#creator.projectCreator();
         this.#eventCreator.projectCreatorEvents(projectCreator, projectManager);
         document.body.appendChild(projectCreator);
+    }
+
+    createHomePage(projectManager) {
+        const page = this.#creator.homePage();
+        this.#eventCreator.homePageEvents(page, projectManager);
+        this.#projectPage.appendChild(page);
     }
 }
 

@@ -64,8 +64,8 @@ class Project { //This is a container of todos.
     #description;
     #todos;
     constructor(title, description) {
-        this.#title = title;
-        this.#description = description;
+        this.#title = title || 'No title';
+        this.#description = description || 'No description';
         this.#todos = [];
     }
 
